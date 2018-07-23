@@ -12,7 +12,13 @@ create
 feature {NONE} -- Initialization
 
 	make
+		note
+			status: creator
+			explicit: wrapping, contracts
+        local
+            elevator: ELEVATOR
 		do
+            create elevator
 
 			print("%N_________Test completed___________%N");
 		end
