@@ -63,8 +63,8 @@ feature -- Public methods
         note
         	explicit: wrapping
         require
+        	feasible_destination: floor_number >= 0 and floor_number < NUM_FLOORS
 			cabin /= Void
-			cabin.is_wrapped
         	modify_model("current_floor", cabin)
         local
             distance: INTEGER
