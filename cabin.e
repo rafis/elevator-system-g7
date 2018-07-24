@@ -11,7 +11,7 @@ class
 create
     make
 
-feature {NONE} -- Public attributes
+feature --{ELEVATOR} -- Public attributes
 
     current_floor: INTEGER
             -- Current floor cabin located at
@@ -35,24 +35,12 @@ feature {NONE} -- Constructor
         	top_floor_set: top_floor = NUM_FLOORS
         end
 
-feature {ELEVATOR} -- Public methods
-
-	get_current_floor: INTEGER
-			-- Return the current floor
-		do
-			Result := current_floor
-		end
-
-	get_top_floor: INTEGER
-			-- Return the top floor
-		do
-			Result := top_floor
-		end
+feature --{ELEVATOR} -- Public methods
 
 	move_up
             -- Move cabin one floor up
         require
-        	can_not_higher_than_upper_floor: get_current_floor() < get_top_floor() - 1
+        	can_not_go_higher_than_upper_floor: current_floor < top_floor - 1
         	modify_model("current_floor", Current)
 		do
             current_floor := current_floor + 1
@@ -63,7 +51,7 @@ feature {ELEVATOR} -- Public methods
 	move_down
             -- Move cabin one floor down
         require
-        	there_is_no_underground_floor: get_current_floor() > 0
+        	there_is_no_underground_floor: current_floor > 0
         	modify_model("current_floor", Current)
 		do
             current_floor := current_floor - 1

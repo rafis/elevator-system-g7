@@ -3,18 +3,22 @@ note
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
+	model: floors, cabin
 
 class
 	ELEVATOR
 
+create
+	make
+
 feature -- Constants
 
-	NUM_FLOORS: INTEGER = 5
+	NUM_FLOORS: INTEGER = 4
 			-- the number of floors
 
-feature {NONE} -- Private attributes
+feature -- Private attributes
 
-    floors: ARRAY[FLOOR]
+    floors: V_ARRAY[FLOOR]
     		-- array of floors
 
     cabin: CABIN
@@ -24,36 +28,51 @@ feature {NONE} -- Constructor
 
     make
             -- Initialize a new cabin
+        note
+        	status: creator
         local
         	i: INTEGER
         do
-			create floors.make_empty
+        	create floors.make(1, NUM_FLOORS)
+        	check floors /= Void end
 			from
-				i := 0
+				i := 1
+			invariant
+				counter_in_range: i >= 1 and i <= NUM_FLOORS
+				floors_is_created: floors /= Void
 			until
 				i >= NUM_FLOORS
 			loop
-				floors.force(create {FLOOR}.make, i+1)
+				floors.put(create {FLOOR}.make, i+1)
 				i := i + 1
+			variant
+				NUM_FLOORS - i
 			end
 
             create cabin.make(NUM_FLOORS)
         ensure
+        	floors_created: floors /= Void
 			all_floors_created: floors.count = NUM_FLOORS
 			cabin_created: cabin /= Void
         end
 
-feature {APPLICATION} -- Public methods
+feature -- Public methods
 
     move(floor_number: INTEGER)
             -- Move cabin to specific floor
+        note
+        	explicit: wrapped
+        require
+			cabin /= Void
+			cabin.is_wrapped
+        	modify_model("current_floor", cabin)
         local
             distance: INTEGER
             i: INTEGER
         do
-            if cabin.get_current_floor() < floor_number
+            if cabin.current_floor < floor_number
             then
-                distance := floor_number - cabin.get_current_floor()
+                distance := floor_number - cabin.current_floor
                 from
                     i := 0
                 until
@@ -63,7 +82,7 @@ feature {APPLICATION} -- Public methods
                     i := i +1
                 end
             else
-                distance := cabin.get_current_floor() - floor_number
+                distance := cabin.current_floor - floor_number
                 from
                     i := 0
                 until
@@ -75,21 +94,18 @@ feature {APPLICATION} -- Public methods
             end
         end
 
---feature {NONE} -- Private methods
-
---    move_up
---            -- Move cabin one floor up
---        do
---            cabin.move_up()
---        end
-
---    move_down
---            -- Move cabin one floor down
---        do
---            cabin.move_down()
---        end
+--feature -- Model
+--	floors_sequence: MML_SET[FLOOR]
+--		note
+--			status: ghost
+--		attribute
+--		end
 
 invariant
+	owns = [cabin, floors]
 	elevator_has_no_benefit_if_less_than_two_floors: NUM_FLOORS >= 2
-
+--	floors.sequence.range = floors_sequence
+	floors_exists: floors /= Void
+--	all_floors_created: floors.count = NUM_FLOORS
+	cabin_exists: cabin /= Void
 end

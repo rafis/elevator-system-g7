@@ -18,7 +18,7 @@ feature {NONE} -- Initialization
         local
             elevator: ELEVATOR
 		do
-            create elevator
+            create elevator.make
 
 			print("%N_________Test completed___________%N");
 		end
