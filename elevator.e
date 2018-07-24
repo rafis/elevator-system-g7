@@ -61,7 +61,7 @@ feature -- Public methods
     move(floor_number: INTEGER)
             -- Move cabin to specific floor
         note
-        	explicit: wrapped
+        	explicit: wrapping
         require
 			cabin /= Void
 			cabin.is_wrapped
