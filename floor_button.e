@@ -12,10 +12,12 @@ inherit
 create
 	make
 
-feature -- Attributes
+feature {FLOOR} -- Attributes
 
     direction: BOOLEAN
-                 -- direction of button
+                 -- direction of button: false - down, true - up
 
+invariant
+	direction_is_ok: direction = false or direction = true
 
 end

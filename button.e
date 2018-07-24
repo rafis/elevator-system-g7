@@ -23,6 +23,23 @@ feature {NONE} -- Constructor
 			is_active_set: is_active = false
 		end
 
+feature -- Functions
+
+	push
+		require
+			modify_model("is_active", Current)
+		do
+			is_active := true
+		end
+
+	release
+		require
+			can_release_only_active: is_active = true
+			modify_model("is_active", Current)
+		do
+			is_active := false
+		end
+
 feature -- Attributes
 
 	is_active: BOOLEAN
