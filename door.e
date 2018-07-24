@@ -7,10 +7,12 @@ note
 class
 	DOOR
 
+create
+	default_create
+
 feature
 
-    do_something
-
+    open
         do
 
         end

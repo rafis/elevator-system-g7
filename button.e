@@ -25,11 +25,13 @@ feature {NONE} -- Constructor
 
 feature -- Functions
 
-	push
+	press
 		require
 			modify_model("is_active", Current)
 		do
 			is_active := true
+		ensure
+			is_active = true
 		end
 
 	release
@@ -38,6 +40,8 @@ feature -- Functions
 			modify_model("is_active", Current)
 		do
 			is_active := false
+		ensure
+			is_active = false
 		end
 
 feature -- Attributes

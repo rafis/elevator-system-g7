@@ -16,14 +16,6 @@ feature -- Constants
 	NUM_FLOORS: INTEGER = 5
 			-- the number of floors
 
-feature -- Private attributes
-
-    floors: SIMPLE_ARRAY[FLOOR]
-    		-- array of floors
-
-    cabin: CABIN
-    		-- cabin
-
 feature {NONE} -- Constructor
 
     make
@@ -45,28 +37,45 @@ feature {NONE} -- Constructor
             create floor1.make(1)
             create floor2.make(2)
             create floor3.make(3)
-            create floor4.make(3)
-        	create floors.init(<< floor0, floor1, floor2, floor3, floor4 >>)
---			from
---				i := 1
---			invariant
---				counter_in_range: i >= 1 and i <= NUM_FLOORS
---				floors_is_wrapped: floors.is_wrapped
---				floors.count = NUM_FLOORS
---				modify_model("floors", Current)
---			until
---				i >= NUM_FLOORS
---			loop
---				floors.force(create {FLOOR}.make, i+1)
---				i := i + 1
---			variant
---				NUM_FLOORS - i
---			end
+            create floor4.make(4)
+			create floors.init(<< floor0, floor1, floor2, floor3, floor4 >>)
         ensure
         	floors_created: floors /= Void
 			all_floors_created: floors.count = NUM_FLOORS
 			cabin_created: cabin /= Void
         end
+
+feature -- Public API
+
+	press_floor_up_button(floor: FLOOR)
+			-- Handle event of user pressed up button
+		note
+			explicit: wrapping
+		require
+			our_floors: floors.has (floor)
+			modify(floor)
+		do
+			floor.press_button_up()
+		ensure
+			button_up_is_pressed: floor.button_up.is_active
+		end
+
+feature -- Logic
+
+	tick
+			-- Do one tick of simulation
+		do
+
+
+		end
+
+feature -- Public (read-only) attributes
+
+    floors: SIMPLE_ARRAY[FLOOR]
+    		-- array of floors
+
+    cabin: CABIN
+    		-- cabin
 
 --feature -- Public methods
 

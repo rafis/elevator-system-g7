@@ -16,18 +16,55 @@ feature {NONE}
 
    	make(n: INTEGER)
 		note
-			status: creator
+			explicit: wrapping
+			explicit: contracts
+		require
+			default_is_wrapped: Current.is_wrapped
+			modify_model(["number", "button_up", "button_down"], Current)
         do
-        	create button_up.make
-        	create button_down.make
+        	if n /= {ELEVATOR}.NUM_FLOORS
+        	then
+        		unwrap
+	        	create button_up.make(true)
+	        	wrap
+	        end
+        	if n /= 0
+        	then
+        		unwrap
+	        	create button_down.make(false)
+	        	wrap
+        	end
+      		unwrap
         	number := n
+        	wrap
         ensure
-        	button_up_created: button_up /= Void
-        	button_down_created: button_down /= Void
+        	button_up_created: number /= {ELEVATOR}.NUM_FLOORS implies button_up /= Void
+--        	button_up_not_created: number = {ELEVATOR}.NUM_FLOORS implies button_up = Void
+        	button_down_created: number /= 0 implies button_down /= Void
+--        	button_down_not_created: number = 0 implies button_down = Void
         	number_set: number = n
         end
 
-feature {ELEVATOR}
+feature
+		-- Public API
+
+	press_button_up
+			-- Press button up
+		do
+			button_up.press()
+		ensure
+			button_up_is_pressed: button_up.is_active
+		end
+
+	press_button_down
+			-- Press button down
+		do
+			button_down.press()
+		ensure
+			button_down_is_pressed: button_down.is_active
+		end
+
+feature
 		-- Attributes
 
 	number: INTEGER
@@ -41,7 +78,9 @@ feature {ELEVATOR}
 
 invariant
 	owns_def: owns = [button_up, button_down]
-	button_up_exists: button_up /= Void
-	button_down_exists: button_down /= Void
+	button_up_exists_except_for_top_floor: number /= {ELEVATOR}.NUM_FLOORS implies button_up /= Void
+	button_down_exists_except_for_ground_floor: number /= 0 implies button_down /= Void
+--	button_up_not_exists_for_top_floor: number = {ELEVATOR}.NUM_FLOORS implies button_up = Void
+--	button_down_not_exists_for_ground_floor: number = 0 implies button_down = Void
 
 end
