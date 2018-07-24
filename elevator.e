@@ -76,7 +76,7 @@ feature -- Public methods
                 from
                     i := 0
                 invariant
-                	i_in_bounds: i >= 0 and i < distance
+                	i_in_bounds: i >= 0 and i <= distance
                 until
                     i >= distance
                 loop
@@ -90,7 +90,7 @@ feature -- Public methods
                 from
                     i := 0
                 invariant
-                	i_in_bounds: i >= 0 and i < distance
+                	i_in_bounds: i >= 0 and i <= distance
                 until
                     i >= distance
                 loop
