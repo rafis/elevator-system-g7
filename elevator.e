@@ -75,21 +75,29 @@ feature -- Public methods
                 distance := floor_number - cabin.current_floor
                 from
                     i := 0
+                invariant
+                	i_in_bounds: i >= 0 and i < distance
                 until
                     i >= distance
                 loop
                     cabin.move_up()
                     i := i +1
+                variant
+                	distance - i
                 end
             else
                 distance := cabin.current_floor - floor_number
                 from
                     i := 0
+                invariant
+                	i_in_bounds: i >= 0 and i < distance
                 until
                     i >= distance
                 loop
                     cabin.move_down()
                     i := i +1
+                variant
+                	distance - i
                 end
             end
         end
