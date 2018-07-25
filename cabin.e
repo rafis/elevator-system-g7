@@ -13,7 +13,7 @@ create
 
 feature {NONE} -- Constructor
 
-    make(floors: SIMPLE_ARRAY[FLOOR])
+    make(floors: V_ARRAY[FLOOR])
             -- Initialize a new cabin
 		note
 			status: creator

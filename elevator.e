@@ -32,12 +32,17 @@ feature {NONE} -- Constructor
         	floor3: FLOOR
         	floor4: FLOOR
         do
+        	create floors.make(1, NUM_FLOORS)
             create floor0.make(0)
             create floor1.make(1)
             create floor2.make(2)
             create floor3.make(3)
             create floor4.make(4)
-			create floors.init(<< floor0, floor1, floor2, floor3, floor4 >>)
+            floors.put(floor0, 1)
+            floors.put(floor1, 2)
+            floors.put(floor2, 3)
+            floors.put(floor3, 4)
+            floors.put(floor4, 5)
             create cabin.make(floors)
         ensure
         	floors_created: floors /= Void
@@ -124,7 +129,7 @@ feature -- Indicating current floor [F5]
 
 feature -- Public (read-only) attributes
 
-    floors: SIMPLE_ARRAY[FLOOR]
+    floors: V_ARRAY[FLOOR]
     		-- array of floors
 
     cabin: CABIN
