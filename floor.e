@@ -38,6 +38,7 @@ feature {NONE}
         	number := n
         	wrap
         ensure
+			default_is_wrapped: Current.is_wrapped
         	button_up_created: number /= {ELEVATOR}.NUM_FLOORS implies button_up /= Void
 --        	button_up_not_created: number = {ELEVATOR}.NUM_FLOORS implies button_up = Void
         	button_down_created: number /= 0 implies button_down /= Void
@@ -50,6 +51,9 @@ feature
 
 	press_button_up
 			-- Press button up
+		require
+			button_up_exist: button_up /= Void
+			modify_model("is_active", button_up)
 		do
 			button_up.press()
 		ensure
@@ -58,6 +62,9 @@ feature
 
 	press_button_down
 			-- Press button down
+		require
+			button_down_exist: button_down /= Void
+			modify_model("is_active", button_down)
 		do
 			button_down.press()
 		ensure

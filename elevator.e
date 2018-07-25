@@ -32,13 +32,13 @@ feature {NONE} -- Constructor
         	floor3: FLOOR
         	floor4: FLOOR
         do
-            create cabin.make(NUM_FLOORS)
             create floor0.make(0)
             create floor1.make(1)
             create floor2.make(2)
             create floor3.make(3)
             create floor4.make(4)
 			create floors.init(<< floor0, floor1, floor2, floor3, floor4 >>)
+            create cabin.make(floors)
         ensure
         	floors_created: floors /= Void
 			all_floors_created: floors.count = NUM_FLOORS
@@ -58,6 +58,32 @@ feature -- Public API
 			floor.press_button_up()
 		ensure
 			button_up_is_pressed: floor.button_up.is_active
+		end
+
+	press_floor_down_button(floor: FLOOR)
+			-- Handle event of user pressed down button
+		note
+			explicit: wrapping
+		require
+			our_floors: floors.has (floor)
+			modify(floor)
+		do
+			floor.press_button_down()
+		ensure
+			button_down_is_pressed: floor.button_down.is_active
+		end
+
+	press_cabin_button(floor: FLOOR)
+			-- Handle event of user pressed down button
+		note
+			explicit: wrapping
+		require
+			our_floors: floors.has (floor)
+			modify(floor)
+		do
+			cabin.press_cabin_button(floor)
+		ensure
+			button_down_is_pressed: floor.button_down.is_active
 		end
 
 feature -- Logic

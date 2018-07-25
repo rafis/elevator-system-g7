@@ -12,7 +12,12 @@ create
 
 feature
 
-    open
+    open_door
+        do
+
+        end
+
+    close_door
         do
 
         end
