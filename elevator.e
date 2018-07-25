@@ -45,7 +45,7 @@ feature {NONE} -- Constructor
 			cabin_created: cabin /= Void
         end
 
-feature -- Public API
+feature -- Calling an elevator to a floor [F1]
 
 	press_floor_up_button(floor: FLOOR)
 			-- Handle event of user pressed up button
@@ -73,6 +73,8 @@ feature -- Public API
 			button_down_is_pressed: floor.button_down.is_active
 		end
 
+feature -- Ordering cabin to move to a floor [F2]
+
 	press_cabin_button(floor: FLOOR)
 			-- Handle event of user pressed down button
 		note
@@ -86,14 +88,39 @@ feature -- Public API
 			button_down_is_pressed: floor.button_down.is_active
 		end
 
-feature -- Logic
+feature -- Moving cabin between floors [F3]
 
 	tick
-			-- Do one tick of simulation
+			-- Do one atomic tick (lock step) of simulation
 		do
 
 
 		end
+
+feature -- Opening and closing doors [F4]
+
+    open
+        do
+            -- TODO
+        end
+
+    close
+        do
+            -- TODO
+        end
+
+feature -- Indicating current floor [F5]
+
+    get_current_floor: INTEGER
+    	note
+    		status: functional
+    	require
+    		current_floor_in_bounds: cabin.current_floor >= 0 and cabin.current_floor < NUM_FLOORS
+        do
+            Result := cabin.current_floor
+        ensure
+            Result = cabin.current_floor
+        end
 
 feature -- Public (read-only) attributes
 
@@ -102,59 +129,6 @@ feature -- Public (read-only) attributes
 
     cabin: CABIN
     		-- cabin
-
---feature -- Public methods
-
---    move(floor_number: INTEGER)
---            -- Move cabin to specific floor
---        note
---        	explicit: wrapping
---        require
---        	feasible_destination: floor_number >= 0 and floor_number < NUM_FLOORS
---			cabin /= Void
---        	modify_model("current_floor", cabin)
---        local
---            distance: INTEGER
---            i: INTEGER
---        do
---            if cabin.current_floor < floor_number
---            then
---                distance := floor_number - cabin.current_floor
---                from
---                    i := 0
---                invariant
---                	i_in_bounds: i >= 0 and i <= distance
---                until
---                    i >= distance
---                loop
---                    cabin.move_up()
---                    i := i + 1
---                variant
---                	distance - i
---                end
---            else
---                distance := cabin.current_floor - floor_number
---                from
---                    i := 0
---                invariant
---                	i_in_bounds: i >= 0 and i <= distance
---                until
---                    i >= distance
---                loop
---                    cabin.move_down()
---                    i := i + 1
---                variant
---                	distance - i
---                end
---            end
---        end
-
---feature -- Model
---	floors_sequence: MML_SET[FLOOR]
---		note
---			status: ghost
---		attribute
---		end
 
 invariant
 	owns_def: owns = [cabin]
