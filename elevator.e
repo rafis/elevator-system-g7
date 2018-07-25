@@ -57,7 +57,7 @@ feature -- Calling an elevator to a floor [F1]
 		note
 			explicit: wrapping
 		require
-			our_floors: floors.has (floor)
+			our_floors: floors.sequence.range.has (floor)
 			modify(floor)
 		do
 			floor.press_button_up()
@@ -70,7 +70,7 @@ feature -- Calling an elevator to a floor [F1]
 		note
 			explicit: wrapping
 		require
-			our_floors: floors.has (floor)
+			our_floors: floors.sequence.range.has (floor)
 			modify(floor)
 		do
 			floor.press_button_down()
@@ -85,7 +85,7 @@ feature -- Ordering cabin to move to a floor [F2]
 		note
 			explicit: wrapping
 		require
-			our_floors: floors.has (floor)
+			our_floors: floors.sequence.range.has (floor)
 			modify(floor)
 		do
 			cabin.press_cabin_button(floor)
